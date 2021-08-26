@@ -77,7 +77,7 @@ const FormData = () => {
         otherhelp: otherhelp,
       };
 
-      axios.post('http://localhost/api/users/storeData.php', allData)
+      axios.post('https://aqueous-anchorage-48352.herokuapp.com', allData)
       .then(response => {
         setResponse(response.data)
         }).catch((err)=>{
