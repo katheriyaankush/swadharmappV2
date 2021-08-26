@@ -1,0 +1,280 @@
+import React, { useState } from 'react'
+import Logo from '../Images/logo.png';
+import Form from 'react-bootstrap/Form';
+import axios from 'axios';
+import './FormData.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+
+
+const FormData = () => {
+
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [dob, setDob] = useState("");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [isworkshop, setIsworkshop] = useState("");
+  const [duration, setDuration] = useState("");
+  const [volunteer, setVolunteer] = useState("");
+  const [otherhelp, setOtherhelp] = useState("");
+  const [response, setResponse] = useState("");
+  const [errors, setErrors] = useState({});
+  const [api, setApi]=useState(false);
+
+  const handleValidation = () => {
+    let errors = {};
+    let formIsValid = true;
+
+    if (!name) {
+      formIsValid = false;
+      errors["name"] = "Cannot be empty name";
+    }
+    if (!number) {
+      formIsValid = false;
+      errors["number"] = "Cannot be empty number";
+    }
+    if (!dob) {
+      formIsValid = false;
+      errors["dob"] = "Cannot be empty DOB";
+    }
+    if (!country) {
+      formIsValid = false;
+      errors["country"] = "Cannot be empty country";
+    }
+    if (!state) {
+      formIsValid = false;
+      errors["state"] = "Cannot be empty state";
+    }
+    if (!city) {
+      formIsValid = false;
+      errors["city"] = "Cannot be empty city";
+    }
+    setErrors({ ...errors, errors: errors });
+    return formIsValid;
+  }
+
+
+  const submitHandler = (event) => {
+    console.log("FUU", handleValidation());
+    event.preventDefault();
+
+    if (handleValidation()) {
+
+    
+      const allData = {
+        name: name,
+        number: number,
+        dob: dob,
+        country: country,
+        state: state,
+        city: city,
+        isworkshop: isworkshop,
+        volunteer: volunteer,
+        duration: duration,
+        otherhelp: otherhelp,
+      };
+
+      axios.post('http://localhost/api/users/storeData.php', allData)
+      .then(response => {
+        setResponse(response.data)
+        }).catch((err)=>{
+        setApi(true);
+      });
+        setNumber("");
+        setCity("");
+        setCountry("");
+        setDob("");
+        setDuration("");
+        setIsworkshop("");
+        setName("");
+        setOtherhelp("");
+        setState("");
+        setVolunteer("");
+    }
+  }
+
+
+  const handleChange = (e) => {
+    e.persist();
+    setIsworkshop(e.target.value);
+  };
+  const handleChangeV = (e) => {
+    e.persist();
+    setVolunteer(e.target.value);
+  };
+  const handleChangeH = (e) => {
+    e.persist();
+    setOtherhelp(e.target.value);
+  };
+
+  return (
+  
+    <div>
+      <form onSubmit={submitHandler}>
+        <section className="mt-4 mb-4">
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-2"></div>
+              <div className="col-sm-8">
+                <div className="detail-bg">
+                  <div className="text-center"><img src={Logo} alt="" style={{ height: "124px" }} /> </div>
+                  <h3 className="text-center main-heading">SwaDharm: Registration Form</h3>
+                  {api ? <h2 style={{color: 'red'}}>Something is wrong.</h2>:
+<div>
+                  <div className="fill-text">
+                    <label><i className="fa fa-user"></i> Name:*</label>
+                    <input type="text" value={name} onChange={(event) => { setName(event.target.value) }} className="form-control" placeholder="Name" />
+                    <span style={{ color: "red" }}>{errors["name"]}</span>
+
+                  </div>
+                  <div className="fill-text">
+                    <label><i className="fa fa-whatsapp" aria-hidden="true"></i> WhatsApp No:*</label>
+                    <input value={number} type="text" onChange={(event) => { setNumber(event.target.value) }} className="form-control" placeholder="Number" />
+                    <span style={{ color: "red" }}>{errors["number"]}</span>
+                  </div>
+                  <div className="fill-text">
+                    <label><i className="fa fa-calendar" aria-hidden="true"></i> Date of Birth:*</label>
+                    <input value={dob} type="date" onChange={(event) => { setDob(event.target.value) }} className="form-control" placeholder="DOB" />
+                    <span style={{ color: "red" }}>{errors["dob"]}</span>
+
+                  </div>
+                  <div className="fill-text">
+                    <label><i className="fa fa-globe" aria-hidden="true"></i> Counrty:*</label>
+                    <input type="text" value={country} onChange={(event) => { setCountry(event.target.value) }} className="form-control" placeholder="Country" />
+                    <span style={{ color: "red" }}>{errors["country"]}</span>
+                  </div>
+                  <div className="fill-text">
+                    <label><i className="fa fa-map" aria-hidden="true"></i> State:*</label>
+                    <input type="text" value={state} onChange={(event) => { setState(event.target.value) }} className="form-control" placeholder="State" />
+                    <span style={{ color: "red" }}>{errors["state"]}</span>
+                  </div>
+                  <div className="fill-text">
+                    <label><i className="fa fa-map-marker" aria-hidden="true"></i> City:*</label>
+                    <input type="text" value={city} onChange={(event) => { setCity(event.target.value) }} className="form-control" placeholder="City" />
+                    <span style={{ color: "red" }}>{errors["city"]}</span>
+
+                  </div>
+                  <hr />
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <p><strong><i className="fa fa-circle"></i>  Would you like to attend the shivir in workshop format?</strong></p>
+                      <span className="box">
+                        <Form.Group controlId={isworkshop}>
+                          <Form.Check
+                            inline
+                            value="Yes"
+                            type="radio"
+                            label="Yes"
+                            onChange={handleChange}
+                            checked={isworkshop === "Yes"}
+                          />
+                          <Form.Check
+                            inline
+                            value="No"
+                            type="radio"
+                            label="No"
+                            onChange={handleChange}
+                            checked={isworkshop === "No"}
+                          />
+                        </Form.Group>
+                      </span>
+                    </div>
+                  </div>
+                  <br />
+
+
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <div>
+                        <h6><strong> How much time would be able to devote per day during paryushan:  </strong></h6>
+                      <select className="form-control-sm"  onChange={(event) => { setDuration(event.target.value) }} >
+                          <option value="2 hours">2 hours  </option>
+                          <option value="2-4 hours">2-4 hours  </option>
+                          <option value="4-6 hours">4-6 hours  </option>
+                          <option value="time no bar">time no bar  </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <p><strong> <i className="fa fa-circle"></i> Would you like to volunteer for the shivir? </strong></p>
+                      <span className="box">
+                        <Form.Group controlId={volunteer}>
+                          <Form.Check
+                            inline
+                            value="Yes"
+                            type="radio"
+                            label="Yes"
+                            onChange={handleChangeV}
+                            checked={volunteer === "Yes"}
+                          />
+                          <Form.Check
+                            inline
+                            value="No"
+                            type="radio"
+                            label="No"
+                            onChange={handleChangeV}
+                            checked={volunteer === "No"}
+                          />
+                        </Form.Group>
+                      </span>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <p><strong> Would you like to interact with and help others during Shivir? </strong></p>
+                      <span className="box">
+                        <Form.Group controlId={otherhelp}>
+                          <Form.Check
+                            inline
+                            value="Yes"
+                            type="radio"
+                            label="Yes"
+                            onChange={handleChangeH}
+                            checked={otherhelp === "Yes"}
+                          />
+                          <Form.Check
+                            inline
+                            value="No"
+                            type="radio"
+                            label="No"
+                            onChange={handleChangeH}
+                            checked={otherhelp === "No"}
+                          />
+                        </Form.Group>
+                      </span>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <div>
+                        <br />
+                        {response.error ? <p style={{color: 'red'}}>Record already exist!!</p >:null}
+                        { response.status ? <p style={{color: 'green'}}>Data successfully added!!</p>:null}
+
+                        <button type="submit" name="submit" className="btn btn-danger">Submit</button>
+                      </div>
+                    </div>
+                  
+                  </div>
+                </div>
+}
+                </div>
+              </div>
+              <div className="col-sm-2"></div>
+            </div>
+          </div>
+        </section>
+      </form>
+    </div>
+  )
+}
+
+export default FormData;
