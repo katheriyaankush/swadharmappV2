@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import './FormData.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Spinner from './Spinner/Spinner'
+import Success  from './Success/Success';
 
 
 
@@ -22,6 +24,7 @@ const FormData = () => {
   const [otherhelp, setOtherhelp] = useState("");
   const [response, setResponse] = useState("");
   const [errors, setErrors] = useState({});
+  const [isSpinner, setIsSpinner]  = useState(false);
   const [api, setApi]=useState(false);
 
   const handleValidation = () => {
@@ -30,27 +33,27 @@ const FormData = () => {
 
     if (!name) {
       formIsValid = false;
-      errors["name"] = "Cannot be empty name";
+      errors["name"] = "Please fill in the name";
     }
     if (!number) {
       formIsValid = false;
-      errors["number"] = "Cannot be empty number";
+      errors["number"] = "Please fill in the number";
     }
     if (!dob) {
       formIsValid = false;
-      errors["dob"] = "Cannot be empty DOB";
+      errors["dob"] = "Please fill in the DOB";
     }
     if (!country) {
       formIsValid = false;
-      errors["country"] = "Cannot be empty country";
+      errors["country"] = "Please fill in the country";
     }
     if (!state) {
       formIsValid = false;
-      errors["state"] = "Cannot be empty state";
+      errors["state"] = "Please fill in the state";
     }
     if (!city) {
       formIsValid = false;
-      errors["city"] = "Cannot be empty city";
+      errors["city"] = "Please fill in the city";
     }
     setErrors({ ...errors, errors: errors });
     return formIsValid;
@@ -58,13 +61,15 @@ const FormData = () => {
 
 
   const submitHandler = (event) => {
-    console.log("FUU", handleValidation());
     event.preventDefault();
 
-    if (handleValidation()) {
-
-    
-      const allData = {
+    let updateNumber = number.replace(/[^\w ]/, '');
+    let isCondition = handleValidation()
+  if(updateNumber<10){
+ isCondition =false;
+  }
+    if (isCondition) {
+        const allData = {
         name: name,
         number: number,
         dob: dob,
@@ -76,10 +81,11 @@ const FormData = () => {
         duration: duration,
         otherhelp: otherhelp,
       };
-
+setIsSpinner(true)
       axios.post('https://aqueous-anchorage-48352.herokuapp.com', allData)
       .then(response => {
         setResponse(response.data)
+        setIsSpinner(false)
         }).catch((err)=>{
         setApi(true);
       });
@@ -110,9 +116,14 @@ const FormData = () => {
     setOtherhelp(e.target.value);
   };
 
+  const redirectHandle = () => {
+    setResponse("");
+  }
   return (
   
+
     <div>
+    {response? <Success message={response} redirectHandle={redirectHandle} />:
       <form onSubmit={submitHandler}>
         <section className="mt-4 mb-4">
           <div className="container">
@@ -122,8 +133,8 @@ const FormData = () => {
                 <div className="detail-bg">
                   <div className="text-center"><img src={Logo} alt="" style={{ height: "124px" }} /> </div>
                   <h3 className="text-center main-heading">SwaDharm: Registration Form</h3>
-                  {api ? <h2 style={{color: 'red'}}>Something is wrong.</h2>:
-<div>
+                  {api ? <h2 style={{color: 'red'}}>Something is wrong.</h2>: isSpinner? <Spinner/>:
+                  <div>
                   <div className="fill-text">
                     <label><i className="fa fa-user"></i> Name:*</label>
                     <input type="text" value={name} onChange={(event) => { setName(event.target.value) }} className="form-control" placeholder="Name" />
@@ -132,7 +143,7 @@ const FormData = () => {
                   </div>
                   <div className="fill-text">
                     <label><i className="fa fa-whatsapp" aria-hidden="true"></i> WhatsApp No:*</label>
-                    <input value={number} type="text" onChange={(event) => { setNumber(event.target.value) }} className="form-control" placeholder="Number" />
+                    <input value={number} type="number" onChange={(event) => setNumber(event.target.value) } className="form-control" placeholder="Number" />
                     <span style={{ color: "red" }}>{errors["number"]}</span>
                   </div>
                   <div className="fill-text">
@@ -142,7 +153,7 @@ const FormData = () => {
 
                   </div>
                   <div className="fill-text">
-                    <label><i className="fa fa-globe" aria-hidden="true"></i> Counrty:*</label>
+                    <label><i className="fa fa-globe" aria-hidden="true"></i> Country:*</label>
                     <input type="text" value={country} onChange={(event) => { setCountry(event.target.value) }} className="form-control" placeholder="Country" />
                     <span style={{ color: "red" }}>{errors["country"]}</span>
                   </div>
@@ -255,10 +266,7 @@ const FormData = () => {
                   <div className="row">
                     <div className="col-sm-12">
                       <div>
-                        <br />
-                        {response.error ? <p style={{color: 'red'}}>Record already exist!!</p >:null}
-                        { response.status ? <p style={{color: 'green'}}>Data successfully added!!</p>:null}
-
+                        <br />     
                         <button type="submit" name="submit" className="btn btn-danger">Submit</button>
                       </div>
                     </div>
@@ -273,6 +281,7 @@ const FormData = () => {
           </div>
         </section>
       </form>
+      }
     </div>
   )
 }
