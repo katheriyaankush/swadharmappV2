@@ -20,7 +20,7 @@ const FormData = () => {
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
   const [isworkshop, setIsworkshop] = useState("");
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState("2 hours");
   const [volunteer, setVolunteer] = useState("");
   const [otherhelp, setOtherhelp] = useState("");
   const [response, setResponse] = useState("");
