@@ -1,0 +1,10 @@
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .csv{ 
+    background-color: #e6a365;
+    border-radius: 15px;
+  }

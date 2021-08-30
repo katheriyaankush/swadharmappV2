@@ -6,6 +6,7 @@ import './FormData.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Spinner from './Spinner/Spinner'
 import Success  from './Success/Success';
+import AdminLogin from './/AdminLogin/AdminLogin'
 
 
 
@@ -26,6 +27,8 @@ const FormData = () => {
   const [errors, setErrors] = useState({});
   const [isSpinner, setIsSpinner]  = useState(false);
   const [api, setApi]=useState(false);
+  const [login, setLogin]=useState(false);
+
 
   const handleValidation = () => {
     let errors = {};
@@ -124,6 +127,7 @@ setIsSpinner(true)
 
     <div>
     {response? <Success message={response} redirectHandle={redirectHandle} />:
+    login?<AdminLogin  setLogin={setLogin}/> :
       <form onSubmit={submitHandler}>
         <section className="mt-4 mb-4">
           <div className="container">
@@ -131,6 +135,7 @@ setIsSpinner(true)
               <div className="col-sm-2"></div>
               <div className="col-sm-8">
                 <div className="detail-bg">
+                  <button type="button" onClick={()=>setLogin(true)} className="LoginClass">Admin Login</button>
                   <div className="text-center"><img src={Logo} alt="" style={{ height: "124px" }} /> </div>
                   <h3 className="text-center main-heading">SwaDharm: Registration Form</h3>
                   {api ? <h2 style={{color: 'red'}}>Something is wrong.</h2>: isSpinner? <Spinner/>:
