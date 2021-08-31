@@ -1,4 +1,18 @@
+.failed{
+color: red;
+text-align: center;
+font-family: 'Courier New';
+font-size: 25px;
+font-weight: 600;
+}
 
+.success{
+    color:green;
+    text-align: center;
+    font-family: 'Courier New';
+    font-size: 25px;
+    font-weight: 600;
+    }
 .button{
     align-items: center;
     margin-top: 40px;
@@ -14,6 +28,7 @@ font-weight: bold;
 color: rgb(250, 246, 246);
 border-radius: 15px;
 }
+
 .button:hover{
     -webkit-transform: scale(1.08);
     -ms-transform: scale(1.08);

@@ -15,7 +15,7 @@ const FormData = () => {
 
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
-  const [dob, setDob] = useState("");
+  const [age, setAge] = useState("");
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
@@ -42,9 +42,9 @@ const FormData = () => {
       formIsValid = false;
       errors["number"] = "Please fill in the number";
     }
-    if (!dob) {
+    if (!age) {
       formIsValid = false;
-      errors["dob"] = "Please fill in the DOB";
+      errors["age"] = "Please fill in the Age";
     }
     if (!country) {
       formIsValid = false;
@@ -75,7 +75,7 @@ const FormData = () => {
         const allData = {
         name: name,
         number: number,
-        dob: dob,
+        age: age,
         country: country,
         state: state,
         city: city,
@@ -95,7 +95,7 @@ setIsSpinner(true)
         setNumber("");
         setCity("");
         setCountry("");
-        setDob("");
+        setAge("");
         setDuration("");
         setIsworkshop("");
         setName("");
@@ -152,9 +152,9 @@ setIsSpinner(true)
                     <span style={{ color: "red" }}>{errors["number"]}</span>
                   </div>
                   <div className="fill-text">
-                    <label><i className="fa fa-calendar" aria-hidden="true"></i> Date of Birth:*</label>
-                    <input value={dob} type="date" onChange={(event) => { setDob(event.target.value) }} className="form-control" placeholder="DOB" />
-                    <span style={{ color: "red" }}>{errors["dob"]}</span>
+                    <label><i className="fa fa-calendar" aria-hidden="true"></i> Age:*</label>
+                    <input value={age} type="number" onChange={(event) => { setAge(event.target.value) }} className="form-control" placeholder="Age" />
+                    <span style={{ color: "red" }}>{errors["age"]}</span>
 
                   </div>
                   <div className="fill-text">
