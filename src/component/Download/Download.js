@@ -5,7 +5,7 @@ import './Download.css'
 
  
 const headers = [
-  'id', 'phone', 'name', 'city', 'state', 'country', 'is_attend', 'time_duration', 'is_volunteer', 'is_help', 'dob', 'date_added'
+  'id', 'phone', 'name', 'age','city', 'state', 'country', 'is_attend', 'time_duration', 'is_volunteer', 'is_help', 'dob', 'date_added'
 ];
  
 class Download extends Component {
